@@ -1,5 +1,7 @@
 from tkinter import *
+from tkinter import messagebox
 import random
+import json
 
 
 # _____________________________________password generator_______________________________________#
@@ -25,11 +27,36 @@ def generate_password():
     password = "".join(password_list)
     password_entry.insert(0, password)
 
+
 # ______________________________________Save Password ___________________________________________#
 def save_password():
     website = website_entry.get()
-    
+    email = email_entry.get()
+    password = password_entry.get()
+    new_data = {
+        website: {
+            "Email": email,
+            "Password": password,
+        }
+    }
 
+    if website == "" or email == "":
+        messagebox.showerror(title="Invalid input", message="Do not leave any fields empty.")
+    else:
+        try:
+            with open("data.json", "r") as data_file:
+                data = json.load(data_file)
+        except FileNotFoundError:
+            with open("data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
+        else:
+            data.update(new_data)
+            with open("data.json", "w") as data_file:
+                json.dump(data, data_file, indent=4)
+        finally:
+            password_entry.delete(0, END)
+            website_entry.delete(0, END)
+            email_entry.delete(0, END)
 # ______________________________________UI SETUP ________________________________________________#
 window = Tk()
 window.title("Password Generator")
@@ -58,15 +85,12 @@ email_entry.grid(column=1, row=2, padx=5, pady=5)
 password_entry = Entry(width=30)
 password_entry.grid(column=1, row=3, padx=5, pady=5)
 
-
 # Buttons
 gen_password = Button(text="Generate Password", width=15, command=generate_password)
 gen_password.grid(column=2, row=3)
-add_password = Button(text="Add Password", width=16)
+add_password = Button(text="Add Password", width=16, command=save_password)
 add_password.grid(column=1, row=4, padx=5, pady=5)
 search = Button(text="Search", width=6)
 search.grid(column=2, row=1)
 
-
 window.mainloop()
-
