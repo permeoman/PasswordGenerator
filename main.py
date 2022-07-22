@@ -29,6 +29,7 @@ def generate_password():
 
 
 # ______________________________________Save Password ___________________________________________#
+
 def save_password():
     website = website_entry.get()
     email = email_entry.get()
@@ -57,6 +58,21 @@ def save_password():
             password_entry.delete(0, END)
             website_entry.delete(0, END)
             email_entry.delete(0, END)
+
+# _____________________________________Search Password______________________________________________#
+
+def find_password():
+    with open("data.json", "r") as data_file:
+        data = json.load(data_file)
+    try:
+        for item in data:
+            for key, value in item:
+                web = item[key]
+                if web == website_entry.get():
+                    messagebox.showinfo(title="Data already saved")
+    except KeyError:
+        messagebox.showerror(title="ERROR", message='No Data File Found')
+
 # ______________________________________UI SETUP ________________________________________________#
 window = Tk()
 window.title("Password Generator")
@@ -90,7 +106,7 @@ gen_password = Button(text="Generate Password", width=15, command=generate_passw
 gen_password.grid(column=2, row=3)
 add_password = Button(text="Add Password", width=16, command=save_password)
 add_password.grid(column=1, row=4, padx=5, pady=5)
-search = Button(text="Search", width=6)
+search = Button(text="Search", width=15, command=find_password)
 search.grid(column=2, row=1)
 
 window.mainloop()
