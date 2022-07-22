@@ -26,7 +26,9 @@ def generate_password():
     password_entry.insert(0, password)
 
 # ______________________________________Save Password ___________________________________________#
-
+def save_password():
+    website = website_entry.get()
+    
 
 # ______________________________________UI SETUP ________________________________________________#
 window = Tk()
@@ -50,6 +52,7 @@ password_label.grid(column=0, row=3)
 # Entries
 website_entry = Entry(width=30)
 website_entry.grid(column=1, row=1, padx=5, pady=5)
+website_entry.focus()
 email_entry = Entry(width=30)
 email_entry.grid(column=1, row=2, padx=5, pady=5)
 password_entry = Entry(width=30)
