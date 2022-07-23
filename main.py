@@ -41,7 +41,7 @@ def save_password():
             "Password": password,
         }
     }
-    
+
     if website == "" or email == "":
         messagebox.showerror(title="Invalid input", message="Do not leave any fields empty.")
     else:
