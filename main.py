@@ -34,13 +34,14 @@ def save_password():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+
     new_data = {
         website: {
             "Email": email,
             "Password": password,
         }
     }
-
+    
     if website == "" or email == "":
         messagebox.showerror(title="Invalid input", message="Do not leave any fields empty.")
     else:
@@ -62,16 +63,20 @@ def save_password():
 # _____________________________________Search Password______________________________________________#
 
 def find_password():
-    with open("data.json", "r") as data_file:
-        data = json.load(data_file)
+    website = website_entry.get()
     try:
-        for item in data:
-            for key, value in item:
-                web = item[key]
-                if web == website_entry.get():
-                    messagebox.showinfo(title="Data already saved")
-    except KeyError:
+        with open("data.json", "r") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
         messagebox.showerror(title="ERROR", message='No Data File Found')
+        save_password()
+    else:
+        if website in data:
+            email = data[website]["Email"]
+            password = data[website]["Password"]
+            messagebox.showinfo(title="website", message=f"Email:{email}\nPassword:{password}")
+        if website not in data:
+            messagebox.showinfo(title=website, message="No details ofr the website exists")
 
 # ______________________________________UI SETUP ________________________________________________#
 window = Tk()
